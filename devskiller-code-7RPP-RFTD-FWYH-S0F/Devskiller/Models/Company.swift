@@ -15,11 +15,10 @@ struct Company: Codable {
     let lauchSites: Int?
     let valuation: Double?
     
-    private enum CodingKeys: String, CodingKey {
-        case name
+    enum CodingKeys: String, CodingKey {
+        case name, valuation
         case founderName = "founder"
         case foundedYear = "founded"
         case lauchSites = "launch_sites"
-        case valuation
     }
 }
