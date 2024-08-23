@@ -16,6 +16,7 @@
 		48D69BD62514ECC800DD96AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D69BD42514ECC800DD96AA /* LaunchScreen.storyboard */; };
 		48D69BE12514ECC800DD96AA /* DevskillerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D69BE02514ECC800DD96AA /* DevskillerTests.swift */; };
 		48D69BEC2514ECC800DD96AA /* DevskillerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D69BEB2514ECC800DD96AA /* DevskillerUITests.swift */; };
+		EC5BA29F2C790CB800BD662B /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA29E2C790CB800BD662B /* Company.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		48D69BE72514ECC800DD96AA /* DevskillerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DevskillerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48D69BEB2514ECC800DD96AA /* DevskillerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevskillerUITests.swift; sourceTree = "<group>"; };
 		48D69BED2514ECC800DD96AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC5BA29E2C790CB800BD662B /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,10 +103,7 @@
 		48D69BC52514ECC700DD96AA /* Devskiller */ = {
 			isa = PBXGroup;
 			children = (
-				EC5BA29D2C7906ED00BD662B /* Model */,
-				EC5BA29C2C7906D400BD662B /* ViewModels */,
-				EC5BA29B2C7906C700BD662B /* ViewControllers */,
-				EC5BA29A2C7906B800BD662B /* Views */,
+				EC5BA29D2C7906ED00BD662B /* Models */,
 				48D69BC62514ECC700DD96AA /* AppDelegate.swift */,
 				48D69BC82514ECC700DD96AA /* SceneDelegate.swift */,
 				48D69BCA2514ECC700DD96AA /* ViewController.swift */,
@@ -135,32 +134,12 @@
 			path = DevskillerUITests;
 			sourceTree = "<group>";
 		};
-		EC5BA29A2C7906B800BD662B /* Views */ = {
+		EC5BA29D2C7906ED00BD662B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				EC5BA29E2C790CB800BD662B /* Company.swift */,
 			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		EC5BA29B2C7906C700BD662B /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		EC5BA29C2C7906D400BD662B /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		EC5BA29D2C7906ED00BD662B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,6 +276,7 @@
 				48D69BD12514ECC700DD96AA /* Devskiller.xcdatamodeld in Sources */,
 				48D69BCB2514ECC700DD96AA /* ViewController.swift in Sources */,
 				48D69BC72514ECC700DD96AA /* AppDelegate.swift in Sources */,
+				EC5BA29F2C790CB800BD662B /* Company.swift in Sources */,
 				48D69BC92514ECC700DD96AA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
