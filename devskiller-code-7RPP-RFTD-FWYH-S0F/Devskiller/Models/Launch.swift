@@ -11,19 +11,20 @@ import Foundation
 // rocket name / type, days from / since today
 // Image, successfull
 struct Launch: Codable {
-    let id: String
-    let flightNumber: Int
     let name: String
-    let details: String
-    let dateUTC: String
+    let details: String?
+    let dateLocal: String?
+    let dateUnix: TimeInterval?
+    let dateUTC: String?
     let success: Bool?
-    let rocket: String
-    let links: Links
+    let rocket: String?
+    let links: Links?
     
     enum CodingKeys: String, CodingKey {
-        case id, name, success, links, details, rocket
-        case flightNumber = "flight_number"
+        case name, success, links, details, rocket
         case dateUTC = "date_utc"
+        case dateLocal = "date_local"
+        case dateUnix = "date_unix"
     }
     
     struct Links: Codable {

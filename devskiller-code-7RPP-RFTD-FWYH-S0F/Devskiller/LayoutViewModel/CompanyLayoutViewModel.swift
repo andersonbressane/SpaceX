@@ -40,14 +40,10 @@ class CompanyLayoutViewModel {
     }
     
     var valuationString: String {
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.current
-        formatter.numberStyle = .currency
-        
-        return formatter.string(from: NSNumber(floatLiteral: self.valuation)) ?? "0"
+        self.company.valuation?.toCurrency(locale: Locale(identifier: "en-US")) ?? "0"
     }
     
     func getString() -> String {
-        return "\(self.name) was founded by \(self.founder) in \(self.foundedYear). It has now \(self.employees) employees, \(self.launchSites) launch sites, and is valued at \(self.valuationString) USD"
+        return "\(self.name) was founded by \(self.founder) in \(self.foundedYear). It has now \(self.employees) employees, \(self.launchSites) launch sites, and is valued at \(self.valuationString)"
     }
 }

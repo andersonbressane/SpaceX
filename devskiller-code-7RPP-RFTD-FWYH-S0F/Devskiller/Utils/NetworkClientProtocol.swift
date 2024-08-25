@@ -18,6 +18,7 @@ protocol AFErrorProtocol: Error {
 }
 
 enum ErrorResult: Error {
+    case noMoreData
     case invalidClient
     case noNetworks
     case badURL
@@ -43,8 +44,10 @@ enum ErrorResult: Error {
             "HTTP error code: \(responseCode)"
         case .unknown(let error):
             "Unknown error: \(error?.localizedDescription ?? "")"
+        case .noMoreData:
+            "No more data available"
         case .parsingError(let object):
-            "It was not pussible to parse \(object)"
+            "It was not possible to parse \(object)"
         }
     }
 }

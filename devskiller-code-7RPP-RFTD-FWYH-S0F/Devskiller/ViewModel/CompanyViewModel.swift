@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 protocol CompanyViewModelProtocol: ViewModelProtocol {
-    func fetchCompany() -> AnyPublisher<CompanyLayoutViewModel, ErrorResult>
+    func getCompany() -> AnyPublisher<CompanyLayoutViewModel, ErrorResult>
 }
 
 class CompanyViewModel: ViewModelProtocol {
@@ -27,9 +27,9 @@ class CompanyViewModel: ViewModelProtocol {
     }
     
     func getCompany() -> AnyPublisher<CompanyLayoutViewModel, ErrorResult> {
-        self.loadState = .isLoading
+        self.loadState = .loading
         
-        let future = Future<CompanyLayoutViewModel, ErrorResult> { [weak self] promise in
+        let publisher = Future<CompanyLayoutViewModel, ErrorResult> { [weak self] promise in
             guard let self else { return }
             
             self.dataSource.getCompany().sink { completion in
@@ -40,12 +40,15 @@ class CompanyViewModel: ViewModelProtocol {
                     self.loadState = .error(message: error.message)
                 }
             } receiveValue: { company in
+                self.loadState = .success(message: nil)
+                
                 self.layoutViewModel = CompanyLayoutViewModel(company: company)
+                
                 promise(.success(CompanyLayoutViewModel(company: company)))
                 
             }.store(in: &self.cancellables)
         }
         
-        return future.eraseToAnyPublisher()
+        return publisher.eraseToAnyPublisher()
     }
 }

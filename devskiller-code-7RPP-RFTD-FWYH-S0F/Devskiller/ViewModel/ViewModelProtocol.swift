@@ -11,7 +11,7 @@ import Combine
 
 enum LoadState {
     case none
-    case isLoading
+    case loading
     case success(message: String?)
     case error(message: String?)
 }

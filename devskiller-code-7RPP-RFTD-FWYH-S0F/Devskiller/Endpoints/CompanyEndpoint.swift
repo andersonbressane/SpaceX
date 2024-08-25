@@ -23,6 +23,9 @@ class CompanyEndpoint: EndpointProtocol {
         
         return urlComponent.url
     }
+    var contentType: String {
+        HTTPBodyContentType.urlEncoded
+    }
     
     var method: HttpMethod {
         .Get

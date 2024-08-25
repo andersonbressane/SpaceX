@@ -10,11 +10,14 @@ import Combine
 
 class ViewController: UIViewController {
     var companyViewModel: CompanyViewModel?
+    var launchViewModel: LaunchViewModel?
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(companyViewModel: CompanyViewModel = CompanyViewModel()) {
+    init(companyViewModel: CompanyViewModel = CompanyViewModel(), launchViewModel: LaunchViewModel = LaunchViewModel()) {
         self.companyViewModel = companyViewModel
+        self.launchViewModel = launchViewModel
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -27,21 +30,33 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        self.fetchCompany()
     }
     
     func fetchCompany() {
-        companyViewModel?.getCompany().sink { completion in
+        /*companyViewModel?.getCompany().sink { completion in
             switch completion {
             case .finished:
-                print("ViewController: companyDataSource finished")
+                print("ViewController: fetchCompany finished")
                 ()
             case .failure(let error):
-                print("ViewController: error \(error.message)")
+                print("ViewController: fetchCompany error \(error.message)")
             }
         } receiveValue: { company in
-            print("ViewController: \(company.getString())")
-        }.store(in: &self.cancellables)
+            print("ViewController: fetchCompany \(company.getString())")
+        }.store(in: &self.cancellables)*/
+        
+        launchViewModel?.fetchLaunches(filter: .default).sink(receiveCompletion: { completion in
+            switch completion {
+            case .finished:
+                print("ViewController: fetchLaunches finished")
+                ()
+            case .failure(let error):
+                print("ViewController: fetchLaunches error \(error.message)")
+            }
+        }, receiveValue: { launches in
+            launches.forEach({ print($0.getString()) })
+        }).store(in: &self.cancellables)
     }
 }
 

@@ -32,6 +32,13 @@
 		EC5BA2D02C7B746B00BD662B /* CompanyLayoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2CF2C7B746B00BD662B /* CompanyLayoutViewModel.swift */; };
 		EC5BA2D32C7B74CC00BD662B /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2D22C7B74CC00BD662B /* CompanyViewModel.swift */; };
 		EC5BA2D52C7B74F000BD662B /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2D42C7B74F000BD662B /* ViewModelProtocol.swift */; };
+		EC5BA2DA2C7BAD3400BD662B /* LaunchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2D92C7BAD3400BD662B /* LaunchFilter.swift */; };
+		EC5BA2DC2C7BB19600BD662B /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2DB2C7BB19600BD662B /* Encodable+Extensions.swift */; };
+		EC5BA2DE2C7BB2DC00BD662B /* LaunchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2DD2C7BB2DC00BD662B /* LaunchViewModel.swift */; };
+		EC5BA2E02C7BB33300BD662B /* LaunchLayoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2DF2C7BB33300BD662B /* LaunchLayoutViewModel.swift */; };
+		EC5BA2E22C7BBAEB00BD662B /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2E12C7BBAEB00BD662B /* Double+Extensions.swift */; };
+		EC5BA2E42C7BBCB300BD662B /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2E32C7BBCB300BD662B /* Date+Extensions.swift */; };
+		ECDB3AEB2C7BDF2000C8C7F3 /* LaunchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDB3AEA2C7BDF2000C8C7F3 /* LaunchResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +90,13 @@
 		EC5BA2CF2C7B746B00BD662B /* CompanyLayoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyLayoutViewModel.swift; sourceTree = "<group>"; };
 		EC5BA2D22C7B74CC00BD662B /* CompanyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyViewModel.swift; sourceTree = "<group>"; };
 		EC5BA2D42C7B74F000BD662B /* ViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocol.swift; sourceTree = "<group>"; };
+		EC5BA2D92C7BAD3400BD662B /* LaunchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchFilter.swift; sourceTree = "<group>"; };
+		EC5BA2DB2C7BB19600BD662B /* Encodable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Extensions.swift"; sourceTree = "<group>"; };
+		EC5BA2DD2C7BB2DC00BD662B /* LaunchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewModel.swift; sourceTree = "<group>"; };
+		EC5BA2DF2C7BB33300BD662B /* LaunchLayoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchLayoutViewModel.swift; sourceTree = "<group>"; };
+		EC5BA2E12C7BBAEB00BD662B /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
+		EC5BA2E32C7BBCB300BD662B /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		ECDB3AEA2C7BDF2000C8C7F3 /* LaunchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +147,7 @@
 		48D69BC52514ECC700DD96AA /* Devskiller */ = {
 			isa = PBXGroup;
 			children = (
+				48D69BD72514ECC800DD96AA /* Info.plist */,
 				EC5BA2D62C7B9B3D00BD662B /* App */,
 				EC5BA2BF2C7A48C500BD662B /* Endpoints */,
 				EC5BA2AA2C79444B00BD662B /* Contants */,
@@ -171,6 +186,8 @@
 				EC5BA29E2C790CB800BD662B /* Company.swift */,
 				EC5BA2A02C7914CE00BD662B /* Launch.swift */,
 				EC5BA2C22C7A4D3700BD662B /* Rocket.swift */,
+				EC5BA2D92C7BAD3400BD662B /* LaunchFilter.swift */,
+				ECDB3AEA2C7BDF2000C8C7F3 /* LaunchResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -189,6 +206,7 @@
 			children = (
 				EC5BA2D42C7B74F000BD662B /* ViewModelProtocol.swift */,
 				EC5BA2D22C7B74CC00BD662B /* CompanyViewModel.swift */,
+				EC5BA2DD2C7BB2DC00BD662B /* LaunchViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -214,6 +232,9 @@
 		EC5BA2B42C7A031800BD662B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				EC5BA2DB2C7BB19600BD662B /* Encodable+Extensions.swift */,
+				EC5BA2E12C7BBAEB00BD662B /* Double+Extensions.swift */,
+				EC5BA2E32C7BBCB300BD662B /* Date+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -241,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				EC5BA2CF2C7B746B00BD662B /* CompanyLayoutViewModel.swift */,
+				EC5BA2DF2C7BB33300BD662B /* LaunchLayoutViewModel.swift */,
 			);
 			path = LayoutViewModel;
 			sourceTree = "<group>";
@@ -253,7 +275,6 @@
 				48D69BCC2514ECC700DD96AA /* Main.storyboard */,
 				48D69BD22514ECC800DD96AA /* Assets.xcassets */,
 				48D69BD42514ECC800DD96AA /* LaunchScreen.storyboard */,
-				48D69BD72514ECC800DD96AA /* Info.plist */,
 				48D69BCF2514ECC700DD96AA /* Devskiller.xcdatamodeld */,
 			);
 			path = App;
@@ -393,19 +414,26 @@
 				EC5BA2C72C7A57AD00BD662B /* Constants.swift in Sources */,
 				EC5BA2C12C7A4A0000BD662B /* CompanyEndpoint.swift in Sources */,
 				EC5BA2BA2C7A0FB400BD662B /* LaunchDataSource.swift in Sources */,
+				EC5BA2E42C7BBCB300BD662B /* Date+Extensions.swift in Sources */,
+				EC5BA2E02C7BB33300BD662B /* LaunchLayoutViewModel.swift in Sources */,
+				ECDB3AEB2C7BDF2000C8C7F3 /* LaunchResponse.swift in Sources */,
 				48D69BD12514ECC700DD96AA /* Devskiller.xcdatamodeld in Sources */,
 				48D69BCB2514ECC700DD96AA /* ViewController.swift in Sources */,
 				48D69BC72514ECC700DD96AA /* AppDelegate.swift in Sources */,
 				EC5BA2B02C79B9B400BD662B /* NetworkClient.swift in Sources */,
 				EC5BA2D52C7B74F000BD662B /* ViewModelProtocol.swift in Sources */,
 				EC5BA2D02C7B746B00BD662B /* CompanyLayoutViewModel.swift in Sources */,
+				EC5BA2DE2C7BB2DC00BD662B /* LaunchViewModel.swift in Sources */,
 				EC5BA2C52C7A4E0400BD662B /* RocketEndpoint.swift in Sources */,
 				EC5BA2CB2C7B664600BD662B /* DataSourceProtocol.swift in Sources */,
 				EC5BA29F2C790CB800BD662B /* Company.swift in Sources */,
 				EC5BA2C32C7A4D3700BD662B /* Rocket.swift in Sources */,
 				EC5BA2BC2C7A118500BD662B /* EndpointProtocol.swift in Sources */,
 				EC5BA2BE2C7A1CE200BD662B /* LaunchEndpoint.swift in Sources */,
+				EC5BA2DA2C7BAD3400BD662B /* LaunchFilter.swift in Sources */,
 				EC5BA2A62C793D6D00BD662B /* CompanyDataSource.swift in Sources */,
+				EC5BA2E22C7BBAEB00BD662B /* Double+Extensions.swift in Sources */,
+				EC5BA2DC2C7BB19600BD662B /* Encodable+Extensions.swift in Sources */,
 				EC5BA2A42C79307100BD662B /* NetworkClientProtocol.swift in Sources */,
 				EC5BA2D32C7B74CC00BD662B /* CompanyViewModel.swift in Sources */,
 				EC5BA2A12C7914CE00BD662B /* Launch.swift in Sources */,

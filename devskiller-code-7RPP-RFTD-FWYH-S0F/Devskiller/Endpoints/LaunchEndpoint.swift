@@ -37,7 +37,7 @@ class LaunchEndpoint: EndpointProtocol {
         case .queryLaunches:
             urlComponent.path.append(API_LAUNCHES_QUERY_URL)
             
-            if let query = parameters?.compactMap({ URLQueryItem(name: $0.key, value: String(describing: $0.value)) }) {
+            if self.contentType == HTTPBodyContentType.urlEncoded, let query = parameters?.compactMap({ URLQueryItem(name: $0.key, value: String(describing: $0.value)) }) {
                 urlComponent.queryItems = query
             }
         }

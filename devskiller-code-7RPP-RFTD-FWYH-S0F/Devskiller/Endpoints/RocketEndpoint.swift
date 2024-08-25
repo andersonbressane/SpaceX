@@ -26,7 +26,7 @@ class RocketEndpoint: EndpointProtocol {
     
     var method: HttpMethod {
         switch actionEnum {
-        case .getRocket(let id):
+        case .getRocket(_):
             .Get
         }
     }

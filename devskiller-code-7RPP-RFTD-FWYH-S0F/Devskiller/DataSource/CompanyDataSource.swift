@@ -14,8 +14,6 @@ protocol CompanyDataSourceProtocol: DataSourceProtocol {
 }
 
 class CompanyDataSource: CompanyDataSourceProtocol {
-    var loadState: LoadState = .none
-    
     var cancellables = Set<AnyCancellable>()
     
     private let networkClient: NetworkClientProtocol
@@ -25,20 +23,14 @@ class CompanyDataSource: CompanyDataSourceProtocol {
     }
     
     func getCompany() -> AnyPublisher<Company, ErrorResult> {
-        self.loadState = .isLoading
-        
-        let returnPublisher = Future<Company, ErrorResult> { [weak self] promise in
+        let publisher = Future<Company, ErrorResult> { [weak self] promise in
             guard let self else { return }
             
-            let publisher = self.networkClient.dataTask(endpoint: CompanyEndpoint(actionEnum: .getCompany))
-            
-            publisher.sink { completion in
+            self.networkClient.dataTask(endpoint: CompanyEndpoint(actionEnum: .getCompany)).sink { completion in
                 switch completion {
                 case .finished:
-                    self.loadState = .none
+                    ()
                 case .failure(let error):
-                    self.loadState = .error(message: error.message)
-                    
                     promise(.failure(error))
                 }
             } receiveValue: { data in
@@ -47,12 +39,10 @@ class CompanyDataSource: CompanyDataSourceProtocol {
                     return
                 }
                 
-                self.loadState = .success(message: nil)
-                
                 promise(.success(company))
             }.store(in: &self.cancellables)
         }
         
-        return returnPublisher.eraseToAnyPublisher()
+        return publisher.eraseToAnyPublisher()
     }
 }

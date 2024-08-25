@@ -20,30 +20,41 @@ class NetworkClient: NetworkClientProtocol {
         request.httpMethod = endpoint.method.rawValue
         request.timeoutInterval = 20
         
+        var log = "Network: \nurl: \(request.url?.absoluteString ?? "")\n"
+        
         if let postData = endpoint.parameters, let data = try? JSONSerialization.data(withJSONObject: postData, options: .prettyPrinted) {
             
             request.setValue(String(format: "%d", postData.count), forHTTPHeaderField: "Content-Length")
             request.setValue(endpoint.contentType, forHTTPHeaderField: "Content-Type")
             request.httpBody = data
+            
+            log += "httpBody: \(String(data: data, encoding: String.Encoding.utf8) ?? "")\n"
         }
         
         let responsePublisher = Future<Data, ErrorResult> { [weak self] promise in
             guard let self else { return }
             
-            let publisher = URLSession.shared.dataTaskPublisher(for: request)
+            let requestPublisher = URLSession.shared.dataTaskPublisher(for: request)
                 .tryMap { output in
                     guard let httpResponse = output.response as? HTTPURLResponse else { throw ErrorResult.invalidResponse }
                     
                     guard (200...299).contains(httpResponse.statusCode) else { throw ErrorResult.httpError(statusCode: httpResponse.statusCode) }
                     
+                    log += "responseCode: \(httpResponse.statusCode)\n"
+                    
+                    log += "responseData:  \(String(data: output.data, encoding: String.Encoding.utf8) ?? "")\n"
+                    
+                    print(log)
+                    
                     return output.data
                 }
                 .mapError { error in
+                    print(log)
                     return ErrorResult.unknown(error)
                 }
                 .eraseToAnyPublisher()
             
-            publisher.sink { completion in
+            requestPublisher.sink { completion in
                 switch completion {
                 case .finished:
                     ()
