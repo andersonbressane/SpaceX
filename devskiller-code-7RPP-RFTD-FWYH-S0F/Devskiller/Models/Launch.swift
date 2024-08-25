@@ -21,7 +21,7 @@ struct Launch: Codable {
     let links: Links
     
     enum CodingKeys: String, CodingKey {
-        case id, name, success, rocket, links, details
+        case id, name, success, links, details, rocket
         case flightNumber = "flight_number"
         case dateUTC = "date_utc"
     }

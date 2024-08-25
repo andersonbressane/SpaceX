@@ -12,11 +12,12 @@ struct Company: Codable {
     let name: String
     let founderName: String
     let foundedYear: Int
+    let employees: Int?
     let lauchSites: Int?
     let valuation: Double?
     
     enum CodingKeys: String, CodingKey {
-        case name, valuation
+        case name, valuation, employees
         case founderName = "founder"
         case foundedYear = "founded"
         case lauchSites = "launch_sites"
