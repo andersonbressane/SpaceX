@@ -22,7 +22,7 @@ class NetworkClient: NetworkClientProtocol {
         
         var log = "Network: \nurl: \(request.url?.absoluteString ?? "")\n"
         
-        if let postData = endpoint.parameters, let data = try? JSONSerialization.data(withJSONObject: postData, options: .prettyPrinted) {
+        if let postData = endpoint.parameters, let data = try? JSONSerialization.data(withJSONObject: postData, options: .withoutEscapingSlashes) {
             
             request.setValue(String(format: "%d", postData.count), forHTTPHeaderField: "Content-Length")
             request.setValue(endpoint.contentType, forHTTPHeaderField: "Content-Type")

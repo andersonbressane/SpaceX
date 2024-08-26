@@ -15,6 +15,10 @@ class LaunchLayoutViewModel {
         self.launch = launch
     }
     
+    var rocketID: String {
+        self.launch.rocket ?? ""
+    }
+    
     var rocket: Rocket?
     
     var missionName: String {
@@ -28,6 +32,8 @@ class LaunchLayoutViewModel {
     var launchDate: Date? {
         Date(timeIntervalSince1970: self.launchDateUnix)
     }
+    
+    var loadState: LoadState = .none
     
     var launchDateTimeString: String {
         guard let launchDate = launchDate else { return "" }
@@ -50,13 +56,7 @@ class LaunchLayoutViewModel {
         }
     }
     
-    func fetchRocket() {
-        if self.rocket == nil {
-            
-        }
-    }
-    
     func getString() -> String {
-        return "\n\nMission: \(missionName)\nDate/Time: \(self.launchDateTimeString) \n\(self.daysInString)\nDetails: \(self.details)"
+        return "\n\nMission: \(missionName)\nDate/Time: \(self.launchDateTimeString) \(self.rocket != nil ? "\nRocket: \(rocket?.name ?? "") / \(rocket?.type ?? "")" : "")\n\(self.daysInString)\nDetails: \(self.details)"
     }
 }

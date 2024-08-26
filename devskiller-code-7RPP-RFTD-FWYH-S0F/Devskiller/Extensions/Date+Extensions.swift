@@ -34,11 +34,9 @@ extension Date {
     
     static func numberOfDaysBetween(_ from: Date, and to: Date) -> Int {
         let calendar = Calendar.current
-        guard let days = calendar.dateComponents([.day],
-                                                     from: calendar.startOfDay(for: from),
-                                                     to: calendar.startOfDay(for: to)).day else {
-              return 0
-            }
+        guard let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: from), to: calendar.startOfDay(for: to)).day else {
+            return 0
+        }
         
         return days
     }

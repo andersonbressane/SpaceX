@@ -39,6 +39,8 @@
 		EC5BA2E22C7BBAEB00BD662B /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2E12C7BBAEB00BD662B /* Double+Extensions.swift */; };
 		EC5BA2E42C7BBCB300BD662B /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2E32C7BBCB300BD662B /* Date+Extensions.swift */; };
 		ECDB3AEB2C7BDF2000C8C7F3 /* LaunchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDB3AEA2C7BDF2000C8C7F3 /* LaunchResponse.swift */; };
+		ECDB3AED2C7C49AB00C8C7F3 /* RocketDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDB3AEC2C7C49AB00C8C7F3 /* RocketDataSource.swift */; };
+		ECDB3AEF2C7C4EA500C8C7F3 /* RocketLayoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDB3AEE2C7C4EA500C8C7F3 /* RocketLayoutViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		EC5BA2E12C7BBAEB00BD662B /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		EC5BA2E32C7BBCB300BD662B /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		ECDB3AEA2C7BDF2000C8C7F3 /* LaunchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchResponse.swift; sourceTree = "<group>"; };
+		ECDB3AEC2C7C49AB00C8C7F3 /* RocketDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketDataSource.swift; sourceTree = "<group>"; };
+		ECDB3AEE2C7C4EA500C8C7F3 /* RocketLayoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLayoutViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +229,7 @@
 				EC5BA2CA2C7B664600BD662B /* DataSourceProtocol.swift */,
 				EC5BA2B92C7A0FB400BD662B /* LaunchDataSource.swift */,
 				EC5BA2A52C793D6D00BD662B /* CompanyDataSource.swift */,
+				ECDB3AEC2C7C49AB00C8C7F3 /* RocketDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -263,6 +268,7 @@
 			children = (
 				EC5BA2CF2C7B746B00BD662B /* CompanyLayoutViewModel.swift */,
 				EC5BA2DF2C7BB33300BD662B /* LaunchLayoutViewModel.swift */,
+				ECDB3AEE2C7C4EA500C8C7F3 /* RocketLayoutViewModel.swift */,
 			);
 			path = LayoutViewModel;
 			sourceTree = "<group>";
@@ -424,6 +430,7 @@
 				EC5BA2D52C7B74F000BD662B /* ViewModelProtocol.swift in Sources */,
 				EC5BA2D02C7B746B00BD662B /* CompanyLayoutViewModel.swift in Sources */,
 				EC5BA2DE2C7BB2DC00BD662B /* LaunchViewModel.swift in Sources */,
+				ECDB3AEF2C7C4EA500C8C7F3 /* RocketLayoutViewModel.swift in Sources */,
 				EC5BA2C52C7A4E0400BD662B /* RocketEndpoint.swift in Sources */,
 				EC5BA2CB2C7B664600BD662B /* DataSourceProtocol.swift in Sources */,
 				EC5BA29F2C790CB800BD662B /* Company.swift in Sources */,
@@ -435,6 +442,7 @@
 				EC5BA2E22C7BBAEB00BD662B /* Double+Extensions.swift in Sources */,
 				EC5BA2DC2C7BB19600BD662B /* Encodable+Extensions.swift in Sources */,
 				EC5BA2A42C79307100BD662B /* NetworkClientProtocol.swift in Sources */,
+				ECDB3AED2C7C49AB00C8C7F3 /* RocketDataSource.swift in Sources */,
 				EC5BA2D32C7B74CC00BD662B /* CompanyViewModel.swift in Sources */,
 				EC5BA2A12C7914CE00BD662B /* Launch.swift in Sources */,
 				48D69BC92514ECC700DD96AA /* SceneDelegate.swift in Sources */,

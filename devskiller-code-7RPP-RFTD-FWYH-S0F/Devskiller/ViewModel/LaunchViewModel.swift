@@ -17,6 +17,7 @@ class LaunchViewModel: LaunchViewModelProtocol {
     var loadState: LoadState = .none
     
     var dataSource: LaunchDataSourceProtocol
+    var rocketDataSource: RocketDataSourceProtocol
     
     var cancellables = Set<AnyCancellable>()
     
@@ -26,8 +27,9 @@ class LaunchViewModel: LaunchViewModelProtocol {
     
     var launchResponse: LaunchResponse?
     
-    init(dataSource: LaunchDataSourceProtocol = LaunchDataSource()) {
+    init(dataSource: LaunchDataSourceProtocol = LaunchDataSource(), rocketDataSource: RocketDataSourceProtocol = RocketDataSource()) {
         self.dataSource = dataSource
+        self.rocketDataSource = rocketDataSource
     }
     
     func resetFilter() {
@@ -67,7 +69,30 @@ class LaunchViewModel: LaunchViewModelProtocol {
         }
         
         return publisher.eraseToAnyPublisher()
+    }
+    
+    func fetchRocket(_ layoutViewModel:LaunchLayoutViewModel) -> AnyPublisher<LaunchLayoutViewModel, ErrorResult> {
+        let publisher = Future<LaunchLayoutViewModel, ErrorResult> { [weak self] promise in
+            guard let self else { return }
+            
+            layoutViewModel.loadState = .loading
+            
+            self.rocketDataSource.fetchRocket(id: layoutViewModel.rocketID).sink { [weak layoutViewModel] completion in
+                switch completion {
+                case .finished:
+                    ()
+                    layoutViewModel?.loadState = .none
+                case .failure(let error):
+                    layoutViewModel?.loadState = .error(message: error.message)
+                }
+            } receiveValue: { rocket in
+                layoutViewModel.rocket = rocket
+                
+                promise(.success(layoutViewModel))
+            }.store(in: &self.cancellables)
+        }
         
+        return publisher.eraseToAnyPublisher()
         
     }
 }
