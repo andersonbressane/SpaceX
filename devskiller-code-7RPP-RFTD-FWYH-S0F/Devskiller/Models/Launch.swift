@@ -11,13 +11,13 @@ import Foundation
 // rocket name / type, days from / since today
 // Image, successfull
 struct Launch: Codable {
-    let name: String
+    let name: String?
     let details: String?
     let dateLocal: String?
     let dateUnix: TimeInterval?
     let dateUTC: String?
     let success: Bool?
-    let rocket: String?
+    let rocket: Rocket?
     let links: Links?
     
     enum CodingKeys: String, CodingKey {
@@ -38,8 +38,13 @@ struct Launch: Codable {
         }
         
         struct Flickr: Codable {
-            let small: [String]
-            let original: [String]
+            let small: [String]?
+            let original: [String]?
         }
+    }
+    
+    struct Rocket: Codable {
+        let name: String?
+        let type: String?
     }
 }

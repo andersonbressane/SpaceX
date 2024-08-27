@@ -15,14 +15,16 @@ class LaunchLayoutViewModel {
         self.launch = launch
     }
     
-    var rocketID: String {
-        self.launch.rocket ?? ""
+    var rocket: Launch.Rocket? {
+        self.launch.rocket
     }
     
-    var rocket: Rocket?
+    var rocketString: String {
+        "\(self.rocket?.name ?? "") / \(self.rocket?.type ?? "")"
+    }
     
     var missionName: String {
-        self.launch.name
+        self.launch.name ?? ""
     }
     
     var launchDateUnix: TimeInterval {
@@ -45,6 +47,10 @@ class LaunchLayoutViewModel {
         self.launch.details ?? ""
     }
     
+    var succeed: Bool {
+        self.launch.success ?? false
+    }
+    
     var daysInString: String {
         let days = Date.numberOfDaysBetween(Date(), and: self.launchDate!)
         if days <= 0 {
@@ -57,6 +63,6 @@ class LaunchLayoutViewModel {
     }
     
     func getString() -> String {
-        return "\n\nMission: \(missionName)\nDate/Time: \(self.launchDateTimeString) \(self.rocket != nil ? "\nRocket: \(rocket?.name ?? "") / \(rocket?.type ?? "")" : "")\n\(self.daysInString)\nDetails: \(self.details)"
+        return "\n\nMission: \(missionName)\nDate/Time: \(self.launchDateTimeString) \(self.rocket != nil ? "\nRocket: \(rocket?.name ?? "") / \(rocket?.type ?? "")" : "")\n\(self.daysInString)\nSuccess: \(self.succeed)\nDetails: \(self.details)"
     }
 }

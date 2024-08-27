@@ -20,7 +20,7 @@ class NetworkClient: NetworkClientProtocol {
         request.httpMethod = endpoint.method.rawValue
         request.timeoutInterval = 20
         
-        var log = "Network: \nurl: \(request.url?.absoluteString ?? "")\n"
+        var log = "\nNetwork: \nurl: \(request.url?.absoluteString ?? "")\nMethod: \(endpoint.method.rawValue)\n"
         
         if let postData = endpoint.parameters, let data = try? JSONSerialization.data(withJSONObject: postData, options: .withoutEscapingSlashes) {
             
@@ -44,12 +44,12 @@ class NetworkClient: NetworkClientProtocol {
                     
                     log += "responseData:  \(String(data: output.data, encoding: String.Encoding.utf8) ?? "")\n"
                     
-                    print(log)
+                    //print(log)
                     
                     return output.data
                 }
                 .mapError { error in
-                    print(log)
+                    //print(log)
                     return ErrorResult.unknown(error)
                 }
                 .eraseToAnyPublisher()

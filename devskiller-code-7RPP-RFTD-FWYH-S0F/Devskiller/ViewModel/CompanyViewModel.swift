@@ -35,16 +35,24 @@ class CompanyViewModel: ViewModelProtocol {
             self.dataSource.getCompany().sink { completion in
                 switch completion {
                 case .finished:
-                    self.loadState = .none
+                    DispatchQueue.main.async {
+                        self.loadState = .none
+                    }
                 case .failure(let error):
-                    self.loadState = .error(message: error.message)
+                    DispatchQueue.main.async {
+                        self.loadState = .error(message: error.message)
+                    }
                 }
-            } receiveValue: { company in
-                self.loadState = .success(message: nil)
+            } receiveValue: { [weak self] company in
+                guard let self else { return }
                 
                 self.layoutViewModel = CompanyLayoutViewModel(company: company)
                 
-                promise(.success(CompanyLayoutViewModel(company: company)))
+                DispatchQueue.main.async {
+                    self.loadState = .success(message: nil)
+                    
+                    promise(.success(self.layoutViewModel!))
+                }
                 
             }.store(in: &self.cancellables)
         }

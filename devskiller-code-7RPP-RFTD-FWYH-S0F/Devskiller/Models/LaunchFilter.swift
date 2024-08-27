@@ -9,14 +9,15 @@
 import Foundation
 
 struct LaunchFilter: Codable {
-    var option: Option?
+    var options: Options?
     var query: Query?
     
-    struct Option: Codable {
+    struct Options: Codable {
         var page: Int
         var limit: Int
-        var order: Order
         var pagination: Bool
+        var populate: [String]?
+        var sort: [String: Order]?
         
         enum Order: String, Codable {
             case asc
@@ -25,9 +26,9 @@ struct LaunchFilter: Codable {
     }
     
     struct Query: Codable {
-        var year: Int
-        var successfull: Bool
+        var date_utc: [[String: String]]?
+        var success: Bool?
     }
     
-    static let `default` = LaunchFilter(option: .init(page: 1, limit: 1, order: .desc, pagination: true))
+    static let `default` = LaunchFilter(options: .init(page: 1, limit: 10, pagination: true, populate: ["rocket"], sort: ["date_unix": .desc]), query: .init(date_utc: /*[["$gte":"2021-01-01T00:00:00.000Z"], ["$lte":"2022-01-01T00:00:00.000Z"]]*/ nil, success: true))
 }

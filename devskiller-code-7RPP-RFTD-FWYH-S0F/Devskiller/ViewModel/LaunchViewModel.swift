@@ -10,89 +10,72 @@ import Foundation
 import Combine
 
 protocol LaunchViewModelProtocol: ViewModelProtocol  {
-    func fetchLaunches(filter: LaunchFilter?) -> AnyPublisher<[LaunchLayoutViewModel], ErrorResult>
+    func fetchLaunches(_ searchFilter: LaunchFilter?)
 }
 
 class LaunchViewModel: LaunchViewModelProtocol {
-    var loadState: LoadState = .none
+    @Published var loadState: LoadState = .none
+    @Published private(set) var layoutViewModels: [LaunchLayoutViewModel] = []
     
     var dataSource: LaunchDataSourceProtocol
-    var rocketDataSource: RocketDataSourceProtocol
     
     var cancellables = Set<AnyCancellable>()
     
     var launchFilter = LaunchFilter.default
     
-    var layoutViewModels: [LaunchLayoutViewModel] = []
-    
     var launchResponse: LaunchResponse?
     
-    init(dataSource: LaunchDataSourceProtocol = LaunchDataSource(), rocketDataSource: RocketDataSourceProtocol = RocketDataSource()) {
+    var isSearching: Bool = false
+    
+    init(dataSource: LaunchDataSourceProtocol = LaunchDataSource()) {
         self.dataSource = dataSource
-        self.rocketDataSource = rocketDataSource
     }
     
     func resetFilter() {
         launchFilter = .default
         
+        self.isSearching = false
+        
+        self.launchResponse = nil
         self.layoutViewModels = []
+        
+        fetchLaunches(launchFilter)
     }
     
-    func fetchLaunches(filter: LaunchFilter?) -> AnyPublisher<[LaunchLayoutViewModel], ErrorResult> {
+    func loadMore() {
+        fetchLaunches(self.launchFilter)
+    }
+    
+    func fetchLaunches(_ searchFilter: LaunchFilter?) {
         self.loadState = .loading
         
-        let publisher = Future<[LaunchLayoutViewModel], ErrorResult> { [weak self] promise in
-            guard let self else { return }
-            
-            if self.launchResponse?.hasNextPage ?? true {
-                self.dataSource.fetchLaunches(launchFilter: filter).sink { completion in
-                    switch completion {
-                    case .finished:
-                        ()
-                        self.loadState = .none
-                    case .failure(let error):
-                        self.loadState = .error(message: error.message)
-                        promise(.failure(error))
-                    }
-                } receiveValue: { launchResponse in
-                    self.loadState = .success(message: nil)
-                    
-                    self.launchResponse = launchResponse
-                    
-                    self.layoutViewModels.append(contentsOf: launchResponse.docs.compactMap({ LaunchLayoutViewModel(launch: $0) }))
-                    
-                    promise(.success(self.layoutViewModels))
-                }.store(in: &self.cancellables)
-            } else {
-                promise(.failure(.noMoreData))
-            }
+        if let searchFilter = searchFilter {
+            self.launchFilter = searchFilter
+            self.isSearching = true
         }
         
-        return publisher.eraseToAnyPublisher()
-    }
-    
-    func fetchRocket(_ layoutViewModel:LaunchLayoutViewModel) -> AnyPublisher<LaunchLayoutViewModel, ErrorResult> {
-        let publisher = Future<LaunchLayoutViewModel, ErrorResult> { [weak self] promise in
-            guard let self else { return }
-            
-            layoutViewModel.loadState = .loading
-            
-            self.rocketDataSource.fetchRocket(id: layoutViewModel.rocketID).sink { [weak layoutViewModel] completion in
+        if self.launchResponse?.hasNextPage ?? true {
+            self.dataSource.fetchLaunches(launchFilter: self.launchFilter).sink { completion in
                 switch completion {
                 case .finished:
                     ()
-                    layoutViewModel?.loadState = .none
+                    
+                    self.loadState = .none
                 case .failure(let error):
-                    layoutViewModel?.loadState = .error(message: error.message)
+                    self.loadState = .error(message: error.message)
                 }
-            } receiveValue: { rocket in
-                layoutViewModel.rocket = rocket
+            } receiveValue: { [weak self] launchResponse in
+                guard let self else { return }
                 
-                promise(.success(layoutViewModel))
+                self.loadState = .success(message: nil)
+                
+                self.launchFilter.options?.page = self.launchResponse?.nextPage ?? 1
+                
+                self.launchResponse = launchResponse
+                
+                self.layoutViewModels.append(contentsOf: launchResponse.docs.compactMap({ LaunchLayoutViewModel(launch: $0) }))
+                
             }.store(in: &self.cancellables)
         }
-        
-        return publisher.eraseToAnyPublisher()
-        
     }
 }
