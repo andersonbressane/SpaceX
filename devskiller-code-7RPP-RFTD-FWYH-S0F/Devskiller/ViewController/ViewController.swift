@@ -40,8 +40,8 @@ class ViewController: UIViewController, UITableViewDataSource {
         self.setupListeners()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        launchViewModel?.fetchLaunches(nil)
+    func fetchLaunches(year: Int?, success: Bool?) {
+        launchViewModel?.fetchLaunches(year: year, success: success)
     }
     
     func setupListeners() {
@@ -57,13 +57,8 @@ class ViewController: UIViewController, UITableViewDataSource {
             }, receiveValue: { [weak self] result in
                 guard let self else { return }
                 
-                print("\nlasResult: \(result.last?.getString())")
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    self.launchViewModel?.loadMore()
-                }
-                
                 self.tableView.reloadData()
+                
             }).store(in: &self.cancellables)
     }
     
