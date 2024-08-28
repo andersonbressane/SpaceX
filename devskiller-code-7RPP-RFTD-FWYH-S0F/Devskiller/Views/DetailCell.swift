@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SDWebImage
 
 class DetailCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -27,7 +28,6 @@ class DetailCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 4
-        imageView.backgroundColor = .lightGray
         return imageView
     }()
     
@@ -197,6 +197,7 @@ class DetailCell: UITableViewCell {
     }
     
     func load(with text: String?) {
+        imageViewPatch.sd_setImage(with: URL(string: "https://images2.imgbox.com/53/22/dh0XSLXO_o.png"))
         labelMissionValue.text = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
         labelRocketValue.text = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
         labelDateTimeValue.text = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."

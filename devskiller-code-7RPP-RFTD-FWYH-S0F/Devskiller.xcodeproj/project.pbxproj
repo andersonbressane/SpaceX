@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -41,6 +41,7 @@
 		ECDB3AF82C7C8B6300C8C7F3 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2AF2C79B9B400BD662B /* NetworkClient.swift */; };
 		ECE220D92C7E679300A227E9 /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE220D82C7E679300A227E9 /* HeaderCell.swift */; };
 		ECE220DB2C7E8EF300A227E9 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE220DA2C7E8EF300A227E9 /* DetailCell.swift */; };
+		ECE220E22C7EA59600A227E9 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = ECE220E12C7EA59600A227E9 /* SDWebImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECE220E22C7EA59600A227E9 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +318,9 @@
 			dependencies = (
 			);
 			name = Devskiller;
+			packageProductDependencies = (
+				ECE220E12C7EA59600A227E9 /* SDWebImage */,
+			);
 			productName = Devskiller;
 			productReference = 48D69BC32514ECC700DD96AA /* Devskiller.app */;
 			productType = "com.apple.product-type.application";
@@ -388,6 +393,9 @@
 				Base,
 			);
 			mainGroup = 48D69BBA2514ECC700DD96AA;
+			packageReferences = (
+				ECE220E02C7EA59600A227E9 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			productRefGroup = 48D69BC42514ECC700DD96AA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -788,6 +796,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		ECE220E02C7EA59600A227E9 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.19.7;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ECE220E12C7EA59600A227E9 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ECE220E02C7EA59600A227E9 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		48D69BCF2514ECC700DD96AA /* Devskiller.xcdatamodeld */ = {
