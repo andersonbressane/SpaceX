@@ -37,11 +37,10 @@
 		EC5BA2E02C7BB33300BD662B /* LaunchLayoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2DF2C7BB33300BD662B /* LaunchLayoutViewModel.swift */; };
 		EC5BA2E22C7BBAEB00BD662B /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2E12C7BBAEB00BD662B /* Double+Extensions.swift */; };
 		EC5BA2E42C7BBCB300BD662B /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2E32C7BBCB300BD662B /* Date+Extensions.swift */; };
-		EC6C60692C7D9D3900A66141 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6C60682C7D9D3900A66141 /* LaunchCell.swift */; };
 		ECDB3AEB2C7BDF2000C8C7F3 /* LaunchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDB3AEA2C7BDF2000C8C7F3 /* LaunchResponse.swift */; };
 		ECDB3AF82C7C8B6300C8C7F3 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5BA2AF2C79B9B400BD662B /* NetworkClient.swift */; };
-		ECDB3B002C7D413900C8C7F3 /* LaunchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDB3AFF2C7D413900C8C7F3 /* LaunchTableViewCell.swift */; };
-		ECDB3B022C7D473100C8C7F3 /* LaunchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECDB3B012C7D473100C8C7F3 /* LaunchTableViewCell.xib */; };
+		ECE220D92C7E679300A227E9 /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE220D82C7E679300A227E9 /* HeaderCell.swift */; };
+		ECE220DB2C7E8EF300A227E9 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE220DA2C7E8EF300A227E9 /* DetailCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,10 +97,9 @@
 		EC5BA2DF2C7BB33300BD662B /* LaunchLayoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchLayoutViewModel.swift; sourceTree = "<group>"; };
 		EC5BA2E12C7BBAEB00BD662B /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		EC5BA2E32C7BBCB300BD662B /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
-		EC6C60682C7D9D3900A66141 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
 		ECDB3AEA2C7BDF2000C8C7F3 /* LaunchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchResponse.swift; sourceTree = "<group>"; };
-		ECDB3AFF2C7D413900C8C7F3 /* LaunchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchTableViewCell.swift; sourceTree = "<group>"; };
-		ECDB3B012C7D473100C8C7F3 /* LaunchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LaunchTableViewCell.xib; sourceTree = "<group>"; };
+		ECE220D82C7E679300A227E9 /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
+		ECE220DA2C7E8EF300A227E9 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,18 +150,19 @@
 		48D69BC52514ECC700DD96AA /* Devskiller */ = {
 			isa = PBXGroup;
 			children = (
-				48D69BD72514ECC800DD96AA /* Info.plist */,
 				EC5BA2D62C7B9B3D00BD662B /* App */,
-				EC5BA2BF2C7A48C500BD662B /* Endpoints */,
 				EC5BA2AA2C79444B00BD662B /* Contants */,
 				EC5BA2B32C7A02F600BD662B /* DataSource */,
+				EC5BA2BF2C7A48C500BD662B /* Endpoints */,
 				EC5BA2B42C7A031800BD662B /* Extensions */,
+				48D69BD72514ECC800DD96AA /* Info.plist */,
 				EC5BA2D12C7B74A700BD662B /* LayoutViewModel */,
 				EC5BA29D2C7906ED00BD662B /* Models */,
-				ECDB3AF02C7C79D300C8C7F3 /* Views */,
-				EC5BA2A72C793F0A00BD662B /* ViewModel */,
-				EC5BA2CC2C7B71CE00BD662B /* ViewController */,
+				ECE220B32C7E5B8D00A227E9 /* MVVM */,
 				EC5BA2A22C79302500BD662B /* Utils */,
+				EC5BA2CC2C7B71CE00BD662B /* ViewController */,
+				EC5BA2A72C793F0A00BD662B /* ViewModel */,
+				ECDB3AF02C7C79D300C8C7F3 /* Views */,
 			);
 			path = Devskiller;
 			sourceTree = "<group>";
@@ -288,11 +287,17 @@
 		ECDB3AF02C7C79D300C8C7F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				ECDB3AFF2C7D413900C8C7F3 /* LaunchTableViewCell.swift */,
-				ECDB3B012C7D473100C8C7F3 /* LaunchTableViewCell.xib */,
-				EC6C60682C7D9D3900A66141 /* LaunchCell.swift */,
+				ECE220D82C7E679300A227E9 /* HeaderCell.swift */,
+				ECE220DA2C7E8EF300A227E9 /* DetailCell.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		ECE220B32C7E5B8D00A227E9 /* MVVM */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MVVM;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -399,7 +404,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECDB3B022C7D473100C8C7F3 /* LaunchTableViewCell.xib in Resources */,
 				48D69BD62514ECC800DD96AA /* LaunchScreen.storyboard in Resources */,
 				48D69BD32514ECC800DD96AA /* Assets.xcassets in Resources */,
 				48D69BCE2514ECC700DD96AA /* Main.storyboard in Resources */,
@@ -440,10 +444,10 @@
 				EC5BA2D52C7B74F000BD662B /* ViewModelProtocol.swift in Sources */,
 				EC5BA2D02C7B746B00BD662B /* CompanyLayoutViewModel.swift in Sources */,
 				EC5BA2DE2C7BB2DC00BD662B /* LaunchViewModel.swift in Sources */,
+				ECE220D92C7E679300A227E9 /* HeaderCell.swift in Sources */,
 				EC5BA2C52C7A4E0400BD662B /* RocketEndpoint.swift in Sources */,
 				EC5BA2CB2C7B664600BD662B /* DataSourceProtocol.swift in Sources */,
 				EC5BA29F2C790CB800BD662B /* Company.swift in Sources */,
-				ECDB3B002C7D413900C8C7F3 /* LaunchTableViewCell.swift in Sources */,
 				EC5BA2BC2C7A118500BD662B /* EndpointProtocol.swift in Sources */,
 				EC5BA2BE2C7A1CE200BD662B /* LaunchEndpoint.swift in Sources */,
 				EC5BA2DA2C7BAD3400BD662B /* LaunchFilter.swift in Sources */,
@@ -453,7 +457,7 @@
 				EC5BA2A42C79307100BD662B /* NetworkClientProtocol.swift in Sources */,
 				EC5BA2D32C7B74CC00BD662B /* CompanyViewModel.swift in Sources */,
 				EC5BA2A12C7914CE00BD662B /* Launch.swift in Sources */,
-				EC6C60692C7D9D3900A66141 /* LaunchCell.swift in Sources */,
+				ECE220DB2C7E8EF300A227E9 /* DetailCell.swift in Sources */,
 				48D69BC92514ECC700DD96AA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

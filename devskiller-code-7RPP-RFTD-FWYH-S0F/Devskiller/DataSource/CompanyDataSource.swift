@@ -11,6 +11,7 @@ import Combine
 
 protocol CompanyDataSourceProtocol: DataSourceProtocol {
     func getCompany() -> AnyPublisher<Company, ErrorResult>
+    func getCompany(completion: @escaping (Result<Company, ErrorResult>) -> Void)
 }
 
 class CompanyDataSource: CompanyDataSourceProtocol {
@@ -20,6 +21,22 @@ class CompanyDataSource: CompanyDataSourceProtocol {
     
     init(networkClient: NetworkClientProtocol = NetworkClient()) {
         self.networkClient = networkClient
+    }
+    
+    func getCompany(completion: @escaping (Result<Company, ErrorResult>) -> Void) {
+        self.networkClient.dataTask(endpoint: CompanyEndpoint(actionEnum: .getCompany)) { result in
+            switch result {
+            case .success(let data):
+                guard let company = try? JSONDecoder().decode(Company.self, from: data) else {
+                    completion(.failure(ErrorResult.parsingError(object: String(describing: Company.self))))
+                    return
+                }
+                
+                completion(.success(company))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     func getCompany() -> AnyPublisher<Company, ErrorResult> {

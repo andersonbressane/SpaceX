@@ -78,7 +78,7 @@ class LaunchViewModel: LaunchViewModelProtocol {
         
         if let searchFilter = searchFilter {
             self.launchFilter = searchFilter
-            self.isSearching = true
+            //self.isSearching = true
         }
         
         if self.launchResponse?.hasNextPage ?? true {
@@ -87,14 +87,16 @@ class LaunchViewModel: LaunchViewModelProtocol {
                 case .finished:
                     ()
                     
-                    self.loadState = .none
+                    //self.loadState = .none
                 case .failure(let error):
-                    self.loadState = .error(message: error.message)
+                    ()
+                    
+                    //self.loadState = .error(message: error.message)
                 }
             } receiveValue: { [weak self] launchResponse in
                 guard let self else { return }
                 
-                self.loadState = .success(message: nil)
+                //self.loadState = .success(message: nil)
                 
                 self.launchResponse = launchResponse
                 

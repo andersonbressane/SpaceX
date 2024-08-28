@@ -54,4 +54,5 @@ enum ErrorResult: Error {
 
 protocol NetworkClientProtocol {
     func dataTask(endpoint: EndpointProtocol) -> AnyPublisher<Data, ErrorResult>
+    func dataTask(endpoint: EndpointProtocol, completion: @escaping (Result<Data, ErrorResult>) -> Void) 
 }

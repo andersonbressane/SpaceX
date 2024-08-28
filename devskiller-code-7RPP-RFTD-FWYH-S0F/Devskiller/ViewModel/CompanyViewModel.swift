@@ -11,12 +11,13 @@ import Combine
 
 protocol CompanyViewModelProtocol: ViewModelProtocol {
     func getCompany() -> AnyPublisher<CompanyLayoutViewModel, ErrorResult>
+    func getCompany(completion: @escaping (Result<CompanyLayoutViewModel, ErrorResult>) -> Void)
 }
 
-class CompanyViewModel: ViewModelProtocol {
+class CompanyViewModel: CompanyViewModelProtocol {
     var loadState: LoadState = .none
     
-    var layoutViewModel: CompanyLayoutViewModel?
+    @Published private(set) var layoutViewModel: CompanyLayoutViewModel?
     
     var cancellables = Set<AnyCancellable>()
     
@@ -24,6 +25,29 @@ class CompanyViewModel: ViewModelProtocol {
     
     init(dataSource: CompanyDataSourceProtocol = CompanyDataSource()) {
         self.dataSource = dataSource
+    }
+    
+    
+    func getCompany(completion: @escaping (Result<CompanyLayoutViewModel, ErrorResult>) -> Void) {
+        self.loadState = .loading
+        
+        self.dataSource.getCompany { [weak self] result in
+            switch result {
+            case .success(let companyModel):
+                guard let self else { return }
+                self.layoutViewModel = CompanyLayoutViewModel(company: companyModel)
+                
+                self.loadState = .success(message: nil)
+                    
+                completion(.success(self.layoutViewModel!))
+            case .failure(let error):
+                guard let self else { return }
+                
+                self.loadState = .error(message: error.message)
+                
+                completion(.failure(error))
+            }
+        }
     }
     
     func getCompany() -> AnyPublisher<CompanyLayoutViewModel, ErrorResult> {
