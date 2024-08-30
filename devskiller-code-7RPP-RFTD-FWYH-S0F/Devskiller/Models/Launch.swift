@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import RealmSwift
 
 // rocket name / type, days from / since today
 // Image, successfull
+
 struct Launch: Codable {
     let name: String?
     let details: String?
@@ -31,15 +33,11 @@ struct Launch: Codable {
         let article: String?
         let wikipedia: String?
         let webcast: String?
+        let patch: Patch?
         
         struct Patch: Codable {
             let small: String?
             let large: String?
-        }
-        
-        struct Flickr: Codable {
-            let small: [String]?
-            let original: [String]?
         }
     }
     

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Combine
 
 enum LoadState {
     case none
@@ -17,8 +16,6 @@ enum LoadState {
 }
 
 protocol ViewModelProtocol {
-    var cancellables: Set<AnyCancellable> { get }
-    
     var loadState: LoadState { get set }
 }
 

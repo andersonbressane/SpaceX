@@ -30,5 +30,5 @@ struct LaunchFilter: Codable {
         var success: Bool?
     }
     
-    static let `default` = LaunchFilter(options: .init(page: 1, limit: 10, pagination: true, populate: ["rocket"], sort: ["date_unix": .desc]), query: .init(date_utc: ["$gte":"2021-01-01T00:00:00.000Z", "$lte":"2021-12-31T23:59:59.999Z"], success: true))
+    static let `default` = LaunchFilter(options: .init(page: 1, limit: 10, pagination: true, populate: ["rocket"], sort: ["date_unix": .desc]), query: nil)
 }

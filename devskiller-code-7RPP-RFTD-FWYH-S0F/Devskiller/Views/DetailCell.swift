@@ -13,7 +13,6 @@ import SDWebImage
 class DetailCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.selectionStyle = .none
         
         self.setUpViews()
     }
@@ -27,7 +26,10 @@ class DetailCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 4
+        imageView.layer.cornerRadius = 8
+        imageView.layer.borderWidth = 1
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderColor = UIColor.secondaryLabel.cgColor
         return imageView
     }()
     
@@ -36,8 +38,17 @@ class DetailCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.image = .init(systemName: "checkmark.circle.fill")
+        imageView.image = .init(systemName: "checkmark.circle")
         imageView.tintColor = .lightGray
+        return imageView
+    }()
+    
+    lazy var imageViewInfo: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = .init(systemName: "info.circle")
+        imageView.tintColor = .secondaryLabel
         return imageView
     }()
     
@@ -46,7 +57,7 @@ class DetailCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .black
+        label.textColor = .label
         label.numberOfLines =  0
         label.textAlignment = .right
         return label
@@ -56,7 +67,7 @@ class DetailCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .lightGray
+        label.textColor = .secondaryLabel
         label.numberOfLines =  0
         label.lineBreakMode = .byWordWrapping
         return label
@@ -67,7 +78,7 @@ class DetailCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .black
+        label.textColor = .label
         label.numberOfLines = 0
         label.textAlignment = .right
         return label
@@ -77,7 +88,7 @@ class DetailCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .lightGray
+        label.textColor = .secondaryLabel
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
@@ -88,7 +99,7 @@ class DetailCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .black
+        label.textColor = .label
         label.numberOfLines = 0
         label.textAlignment = .right
         return label
@@ -98,7 +109,7 @@ class DetailCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .lightGray
+        label.textColor = .secondaryLabel
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
@@ -109,7 +120,7 @@ class DetailCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .black
+        label.textColor = .label
         label.numberOfLines = 0
         label.textAlignment = .right
         return label
@@ -119,7 +130,7 @@ class DetailCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .lightGray
+        label.textColor = .secondaryLabel
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
@@ -137,6 +148,12 @@ class DetailCell: UITableViewCell {
         imageViewCheck.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8).isActive = true
         imageViewCheck.widthAnchor.constraint(equalToConstant: 24).isActive = true
         imageViewCheck.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        
+        contentView.addSubview(imageViewInfo)
+        imageViewInfo.topAnchor.constraint(equalTo: imageViewCheck.bottomAnchor, constant: 16).isActive = true
+        imageViewInfo.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8).isActive = true
+        imageViewInfo.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        imageViewInfo.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         contentView.addSubview(labelMissionKey)
         labelMissionKey.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
@@ -162,6 +179,8 @@ class DetailCell: UITableViewCell {
         labelDateTimeValue.topAnchor.constraint(equalTo: labelMissionValue.bottomAnchor, constant: 8).isActive = true
         labelDateTimeValue.leadingAnchor.constraint(equalTo: labelDateTimeKey.trailingAnchor, constant: 8).isActive = true
         labelDateTimeValue.trailingAnchor.constraint(equalTo: imageViewCheck.leadingAnchor, constant: -8).isActive = true
+        labelDateTimeValue.heightAnchor.constraint(greaterThanOrEqualTo: labelDateTimeKey.heightAnchor).isActive = true
+        
         let labelDateTimeHeightAnchor = labelDateTimeValue.heightAnchor.constraint(equalToConstant: 24)
         labelDateTimeHeightAnchor.priority = .defaultLow
         labelDateTimeHeightAnchor.isActive = true
@@ -196,11 +215,23 @@ class DetailCell: UITableViewCell {
         labelDaysHeightAnchor.isActive = true
     }
     
-    func load(with text: String?) {
-        imageViewPatch.sd_setImage(with: URL(string: "https://images2.imgbox.com/53/22/dh0XSLXO_o.png"))
-        labelMissionValue.text = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
-        labelRocketValue.text = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
-        labelDateTimeValue.text = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
-        labelDaysCountValue.text = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
+    override func prepareForReuse() {
+        self.imageViewPatch.image = nil
+        self.imageViewCheck.image = nil 
+        self.imageViewInfo.isHidden = true
+    }
+    
+    func load(with layoutViewModel: LaunchLayoutViewModel?) {
+        imageViewPatch.sd_setImage(with: URL(string: layoutViewModel?.pathString ?? ""), placeholderImage: UIImage(named: "spacex-icon")?.withTintColor(.label))
+        
+        imageViewCheck.image = UIImage(systemName: layoutViewModel?.succeed ?? false ? "checkmark.circle" : "x.circle")
+        imageViewCheck.tintColor = layoutViewModel?.succeed ?? false ? .systemGreen : .systemRed
+        
+        imageViewInfo.isHidden = !(layoutViewModel?.hasLink ?? false)
+        
+        labelMissionValue.text = layoutViewModel?.missionName ?? ""
+        labelRocketValue.text = layoutViewModel?.rocketString ?? ""
+        labelDateTimeValue.text = layoutViewModel?.launchDateTimeString ?? ""
+        labelDaysCountValue.text = layoutViewModel?.daysInString ?? ""
     }
 }

@@ -7,53 +7,77 @@
 //
 
 import Foundation
-import Combine
 
-protocol LaunchDataSourceProtocol: DataSourceProtocol {
-    func fetchLaunches(launchFilter: LaunchFilter?) -> AnyPublisher<LaunchResponse, ErrorResult>
+protocol LaunchDataSourceProtocol {
+    func fetchLaunches(filter: LaunchFilter?, completion: @escaping (Result<LaunchResponse, ErrorResult>) -> Void)
 }
 
 class LaunchDataSource: LaunchDataSourceProtocol {
-    var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
+    private let networkClient: NetworkClientProtocol
+    private let databaseClient: DatabaseClientProtocol
     
-    let networkClient: NetworkClientProtocol
+    var launchResponse: LaunchResponse?
     
-    init(networkClient: NetworkClientProtocol = NetworkClient()) {
+    init(networkClient: NetworkClientProtocol = NetworkClient(), databaseClient: DatabaseClientProtocol = DatabaseClient()) {
         self.networkClient = networkClient
+        self.databaseClient = databaseClient
     }
     
-    func fetchLaunches(launchFilter: LaunchFilter?) -> AnyPublisher<LaunchResponse, ErrorResult> {
-        let publisher = Future<LaunchResponse, ErrorResult> { [weak self] promise in
-            guard let self else { return }
-            
-            var endPoint = LaunchEndpoint(.getLaunches)
-            
-            if let launchFilter = launchFilter {
-                guard let dictionary = launchFilter.toDictionary else {
-                    promise(.failure(ErrorResult.parsingError(object: String(describing: LaunchFilter.self))))
-                    return
-                }
-                
-                endPoint = LaunchEndpoint(.queryLaunches, parameters: dictionary)
-            }
-            
-            self.networkClient.dataTask(endpoint: endPoint).sink { completion in
-                switch completion {
-                case .finished:
-                    ()
-                case .failure(let error):
-                    promise(.failure(error))
-                }
-            } receiveValue: { data in
-                guard let launches = try? JSONDecoder().decode(LaunchResponse.self, from: data) else {
-                    promise(.failure(ErrorResult.parsingError(object: String(describing: LaunchResponse.self))))
-                    return
-                }
-                
-                promise(.success(launches))
-            }.store(in: &self.cancellables)
+    func fetchLaunches(filter: LaunchFilter?, completion: @escaping (Result<LaunchResponse, ErrorResult>) -> Void) {
+        
+        if self.launchResponse == nil {
+            self.getCache(completion: completion)
         }
         
-        return publisher.eraseToAnyPublisher()
+        var endPoint = LaunchEndpoint(.getLaunches)
+        
+        if let launchFilter = filter {
+            guard let dictionary = launchFilter.toDictionary else {
+                completion(.failure(ErrorResult.parsingError(object: String(describing: LaunchFilter.self))))
+                return
+            }
+            
+            endPoint = LaunchEndpoint(.queryLaunches, parameters: dictionary)
+        }
+        
+        self.networkClient.dataTask(endpoint: endPoint) { [weak self] result in
+            guard let self else { return }
+            
+            switch result {
+            case .success(let data):
+                guard let launches = try? JSONDecoder().decode(LaunchResponse.self, from: data) else {
+                    completion(.failure(ErrorResult.parsingError(object: String(describing: LaunchResponse.self))))
+                    return
+                }
+                
+                self.cacheData(launchResponse: launches)
+                
+                self.launchResponse = launches
+                
+                completion(.success(launches))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func cacheData(launchResponse: LaunchResponse) {
+        guard let launchResponse = LaunchResponseModel.convertFrom(object: launchResponse) else { return }
+        
+        self.databaseClient.save(object: launchResponse) { _ in }
+    }
+    
+    private func getCache(completion: @escaping (Result<LaunchResponse, ErrorResult>) -> Void) {
+        self.databaseClient.getLaunches { result in
+            switch result {
+            case .success(let launches):
+                completion(.success(launches))
+                
+                print("Database: returned cached Launches")
+                return
+            case .failure(let failure):
+                print("Database: not able to fetch cache \(failure.message)")
+            }
+        }
     }
 }

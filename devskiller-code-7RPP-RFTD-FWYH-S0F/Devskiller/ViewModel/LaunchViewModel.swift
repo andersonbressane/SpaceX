@@ -7,102 +7,123 @@
 //
 
 import Foundation
-import Combine
 
 enum LaunchViewModelError: Error {
     case InvalidDate
 }
 
 protocol LaunchViewModelProtocol: ViewModelProtocol  {
-    func fetchLaunches(_ searchFilter: LaunchFilter?)
+    func fetchMore(completion: @escaping (Result<Bool, ErrorResult>) -> Void)
+    func resetFilter(completion: @escaping (Result<Bool, ErrorResult>) -> Void)
+    func fetchLaunches(_ filter: LaunchFilter?, completion: @escaping (Result<Bool, ErrorResult>) -> Void)
+    func fetchLaunches(year: Int?, success: Bool?, order: LaunchFilter.Options.Order?, completion: @escaping (Result<Bool, ErrorResult>) -> Void)
+    var layoutViewModels: [LaunchLayoutViewModel] { get }
 }
 
 class LaunchViewModel: LaunchViewModelProtocol {
-    @Published var loadState: LoadState = .none
-    @Published private(set) var layoutViewModels: [LaunchLayoutViewModel] = []
+    
+    var loadState: LoadState = .none
+    
+    var layoutViewModels: [LaunchLayoutViewModel] = []
+    
+    private enum Constants {
+        static let dateUTC = "date_unix"
+        static let greaterThan = "$gte"
+        static let lessThan = "$lte"
+        static let dateFrom = "%d-01-01T00:00:00.000Z"
+        static let dateTo = "%d-12-31T23:59:59.999Z"
+    }
     
     var dataSource: LaunchDataSourceProtocol
-    
-    var cancellables = Set<AnyCancellable>()
     
     var launchFilter = LaunchFilter.default
     
     var launchResponse: LaunchResponse?
-    
-    var isSearching: Bool = false
-    
     init(dataSource: LaunchDataSourceProtocol = LaunchDataSource()) {
         self.dataSource = dataSource
     }
     
-    // clear
-    func resetFilter() {
+    var isFetching = false
+    
+    func resetFilter(completion: @escaping (Result<Bool, ErrorResult>) -> Void) {
         launchFilter = .default
-        
-        self.isSearching = false
         
         self.launchResponse = nil
         self.layoutViewModels = []
         
-        fetchLaunches(launchFilter)
+        self.fetchLaunches(self.launchFilter, completion: completion)
     }
     
-    // Pagination
-    func loadMore() {
+    func fetchMore(completion: @escaping (Result<Bool, ErrorResult>) -> Void) {
         self.launchFilter.options?.page = self.launchResponse?.nextPage ?? 1
         
-        fetchLaunches(self.launchFilter)
+        fetchLaunches(self.launchFilter, completion: completion)
     }
     
-    // Filter
-    func fetchLaunches(year: Int? = nil, success: Bool? = nil, order: LaunchFilter.Options.Order? = .desc) {
+    func fetchLaunches(year: Int?, success: Bool?, order: LaunchFilter.Options.Order?, completion: @escaping (Result<Bool, ErrorResult>) -> Void) {
+        self.launchFilter = .default
+        
+        self.launchResponse = nil
+        
+        self.layoutViewModels = []
+        
         self.launchFilter.query = LaunchFilter.Query(date_utc: createYearFilter(year: year), success: success)
         
-        if let order = order {
-            self.launchFilter.options?.sort = ["date_unix": order]
-        }
+        self.launchFilter.options?.sort = [Constants.dateUTC: order ?? .desc]
         
-        fetchLaunches(self.launchFilter)
+        fetchLaunches(self.launchFilter, completion: completion)
     }
     
-    // Date filter
-    func createYearFilter(year: Int?) -> [String:String]? {
-        guard let year = year else { return nil }
+    func fetchLaunches(_ filter: LaunchFilter?, completion: @escaping (Result<Bool, ErrorResult>) -> Void) {
+        isFetching = true
         
-        return ["$gte": "\(year)-01-01T00:00:00.000Z", "$lte": "\(year)-12-31T23:59:59.999Z"]
-    }
-    
-    // Fetch
-    func fetchLaunches(_ searchFilter: LaunchFilter?) {
         self.loadState = .loading
-        
-        if let searchFilter = searchFilter {
-            self.launchFilter = searchFilter
-            //self.isSearching = true
+          
+        if let filter = filter {
+            self.launchFilter = filter
         }
         
         if self.launchResponse?.hasNextPage ?? true {
-            self.dataSource.fetchLaunches(launchFilter: self.launchFilter).sink { completion in
-                switch completion {
-                case .finished:
-                    ()
-                    
-                    //self.loadState = .none
-                case .failure(let error):
-                    ()
-                    
-                    //self.loadState = .error(message: error.message)
-                }
-            } receiveValue: { [weak self] launchResponse in
+            
+            self.dataSource.fetchLaunches(filter: filter) { [weak self] result in
                 guard let self else { return }
+                self.isFetching = false
                 
-                //self.loadState = .success(message: nil)
+                self.loadState = .none
                 
-                self.launchResponse = launchResponse
-                
-                self.layoutViewModels.append(contentsOf: launchResponse.docs.compactMap({ LaunchLayoutViewModel(launch: $0) }))
-                
-            }.store(in: &self.cancellables)
+                switch result {
+                case .success(let launchResponse):
+                    self.launchResponse = launchResponse
+                    
+                    if self.launchResponse?.totalDocs == 0 && self.launchResponse?.page == 1 {
+                        completion(.failure(.noResult))
+                    } else {
+                        self.layoutViewModels.append(contentsOf: launchResponse.docs.compactMap({ LaunchLayoutViewModel(launch: $0) }))
+                    }
+                    
+                    completion(.success(true))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        } else {
+            completion(.failure(.noMoreData))
         }
+    }
+    
+    // Date filter
+    private func createYearFilter(year: Int?) -> [String:String]? {
+        guard let year = year else { return nil }
+        
+        return [Constants.greaterThan: String(format: Constants.dateFrom, year), Constants.lessThan: String(format: Constants.dateTo, year)]
+    }
+    
+    // Filter
+    func createFilterQuery(year: Int?, success: Bool?, order: LaunchFilter.Options.Order?) -> LaunchFilter.Query {
+        let filter = LaunchFilter.Query(date_utc: createYearFilter(year: year), success: success)
+        
+        self.launchFilter.options?.sort = [Constants.dateUTC: order ?? .desc]
+        
+        return filter
     }
 }

@@ -16,15 +16,15 @@ class CompanyLayoutViewModel {
     }
     
     var name: String {
-        self.company.name
+        self.company.name ?? ""
     }
     
     var founder: String {
-        self.company.founderName
+        self.company.founderName ?? ""
     }
     
     var foundedYear: Int {
-        self.company.foundedYear
+        self.company.foundedYear ?? 0
     }
     
     var employees: Int {
@@ -44,6 +44,6 @@ class CompanyLayoutViewModel {
     }
     
     func getString() -> String {
-        return "\(self.name) was founded by \(self.founder) in \(self.foundedYear). It has now \(self.employees) employees, \(self.launchSites) launch sites, and is valued at \(self.valuationString)"
+        return "\(self.name) was founded by \(self.founder) in \(self.foundedYear). It has now \(self.employees) employees, \(self.launchSites) launch sites, and is valued at USD \(self.valuationString)"
     }
 }

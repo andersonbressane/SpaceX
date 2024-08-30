@@ -10,11 +10,11 @@ import Foundation
 
 struct LaunchResponse: Codable {
     let docs: [Launch]
-    
-    var page: Int
-    var hasNextPage: Bool?
-    var hasPrevPage: Bool?
-    var limit: Int?
+    let page: Int
+    let hasNextPage: Bool?
+    let hasPrevPage: Bool?
+    let totalDocs: Int?
+    let limit: Int?
     let nextPage: Int?
     let prevPage: Int?
 }

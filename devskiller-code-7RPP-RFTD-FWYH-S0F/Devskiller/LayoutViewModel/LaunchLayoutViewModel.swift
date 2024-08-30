@@ -15,24 +15,29 @@ class LaunchLayoutViewModel {
         self.launch = launch
     }
     
+    var pathString: String? {
+        self.launch.links?.patch?.small
+    }
+    
     var rocket: Launch.Rocket? {
         self.launch.rocket
     }
     
     var rocketString: String {
-        "\(self.rocket?.name ?? "") / \(self.rocket?.type ?? "")"
+        self.launch.rocket != nil ? "\(self.rocket?.name ?? "") / \(self.rocket?.type ?? "")" : ""
     }
     
     var missionName: String {
         self.launch.name ?? ""
     }
     
-    var launchDateUnix: TimeInterval {
-        self.launch.dateUnix ?? 0
+    var launchDateUnix: TimeInterval? {
+        self.launch.dateUnix
     }
     
     var launchDate: Date? {
-        Date(timeIntervalSince1970: self.launchDateUnix)
+        guard let dateUnix = self.launchDateUnix else { return nil }
+        return Date(timeIntervalSince1970: dateUnix)
     }
     
     var loadState: LoadState = .none
@@ -53,7 +58,7 @@ class LaunchLayoutViewModel {
     
     var daysInString: String {
         let days = Date.numberOfDaysBetween(Date(), and: self.launchDate!)
-        if days <= 0 {
+        if days < 0 {
             return "\(days * -1) days since now"
         } else if days > 0 {
             return "\(days) days from now"
@@ -62,7 +67,31 @@ class LaunchLayoutViewModel {
         }
     }
     
-    func getString() -> String {
-        return "\n\nMission: \(missionName)\nDate/Time: \(self.launchDateTimeString) \(self.rocket != nil ? "\nRocket: \(rocket?.name ?? "") / \(rocket?.type ?? "")" : "")\n\(self.daysInString)\nSuccess: \(self.succeed)\nDetails: \(self.details)"
+    var articleURL: URL? {
+        guard let article = self.launch.links?.article, let url = URL(string: article) else {
+            return nil
+        }
+        
+        return url
+    }
+    
+    var wikiPediaURL: URL? {
+        guard let wikipedia = self.launch.links?.wikipedia, let url = URL(string: wikipedia) else {
+            return nil
+        }
+        
+        return url
+    }
+    
+    var webCastURL: URL? {
+        guard let webcast = self.launch.links?.webcast, let url = URL(string: webcast) else {
+            return nil
+        }
+        
+        return url
+    }
+    
+    var hasLink: Bool {
+        return (articleURL != nil || wikiPediaURL != nil  || webCastURL != nil )
     }
 }

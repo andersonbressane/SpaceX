@@ -25,7 +25,7 @@ class HeaderCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .title3)
-        label.textColor = .darkGray
+        label.textColor = .label
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label

@@ -7,30 +7,34 @@
 //
 
 import Foundation
-import Combine
 
-protocol CompanyDataSourceProtocol: DataSourceProtocol {
-    func getCompany() -> AnyPublisher<Company, ErrorResult>
+protocol CompanyDataSourceProtocol {
     func getCompany(completion: @escaping (Result<Company, ErrorResult>) -> Void)
 }
 
 class CompanyDataSource: CompanyDataSourceProtocol {
-    var cancellables = Set<AnyCancellable>()
-    
     private let networkClient: NetworkClientProtocol
+    private let databaseClient: DatabaseClientProtocol
     
-    init(networkClient: NetworkClientProtocol = NetworkClient()) {
+    init(networkClient: NetworkClientProtocol = NetworkClient(), databaseClient: DatabaseClientProtocol = DatabaseClient()) {
         self.networkClient = networkClient
+        self.databaseClient = databaseClient
     }
     
     func getCompany(completion: @escaping (Result<Company, ErrorResult>) -> Void) {
-        self.networkClient.dataTask(endpoint: CompanyEndpoint(actionEnum: .getCompany)) { result in
+        self.setCache(completion: completion)
+        
+        self.networkClient.dataTask(endpoint: CompanyEndpoint(actionEnum: .getCompany)) { [weak self] result in
+            guard let self else { return }
+            
             switch result {
             case .success(let data):
                 guard let company = try? JSONDecoder().decode(Company.self, from: data) else {
                     completion(.failure(ErrorResult.parsingError(object: String(describing: Company.self))))
                     return
                 }
+                
+                self.cacheData(company: company)
                 
                 completion(.success(company))
             case .failure(let error):
@@ -39,27 +43,23 @@ class CompanyDataSource: CompanyDataSourceProtocol {
         }
     }
     
-    func getCompany() -> AnyPublisher<Company, ErrorResult> {
-        let publisher = Future<Company, ErrorResult> { [weak self] promise in
-            guard let self else { return }
-            
-            self.networkClient.dataTask(endpoint: CompanyEndpoint(actionEnum: .getCompany)).sink { completion in
-                switch completion {
-                case .finished:
-                    ()
-                case .failure(let error):
-                    promise(.failure(error))
-                }
-            } receiveValue: { data in
-                guard let company = try? JSONDecoder().decode(Company.self, from: data) else {
-                    promise(.failure(ErrorResult.parsingError(object: String(describing: Company.self))))
-                    return
-                }
-                
-                promise(.success(company))
-            }.store(in: &self.cancellables)
-        }
+    private func cacheData(company: Company) {
+        guard let companyModel = CompanyModel.convertFrom(object: company) else { return }
         
-        return publisher.eraseToAnyPublisher()
+        self.databaseClient.save(object: companyModel) { _ in }
+    }
+    
+    private func setCache(completion: @escaping (Result<Company, ErrorResult>) -> Void) {
+        self.databaseClient.getCompany { result in
+            switch result {
+            case .success(let company):
+                completion(.success(company))
+                
+                print("Database: returned cached Company")
+                return
+            case .failure(let failure):
+                print("Database: not able to fetch cache \(failure.message)")
+            }
+        }
     }
 }

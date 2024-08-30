@@ -18,3 +18,9 @@ let API_COMPANY_URL = "company"
 let TWENTY_SECONDS = 20
 let FIVE_MINUTES = 300
 let TWENTY_FOUR_HOURS = 86400
+let INDEX_TO_LOAD_MORE = 4
+let YEAR_FOUNDED = 2002
+let YEAR_TODAY: Int = {
+    let year = Calendar.current.component(.year, from: Date())
+    return year
+}()
